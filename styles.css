@@ -28,7 +28,7 @@ nav a:hover, nav a.active { background: rgba(255,255,255,0.25); }
 main { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
 .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
 .form-group input, .form-group textarea, .search-input, .company-select { width: 100%; padding: 12px 15px; border: 2px solid var(--border-color); border-radius: 8px; font-size: 16px; background: var(--bg-primary); color: var(--text-primary); }
-.form-group input:focus, .form-group textarea:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+.form-group input:focus, .form-group textarea:focus, .search-input:focus, .company-select:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
 button { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; color: white; }
 .btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
 .btn-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
@@ -36,6 +36,8 @@ button { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600;
 button:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 .theme-toggle { background: rgba(255,255,255,0.2); border: 2px solid rgba(255,255,255,0.3); padding: 8px 12px; border-radius: 8px; color: white; }
 .search-section { margin-bottom: 30px; }
+.search-input { transition: all 0.3s ease; }
+.search-input:hover { border-color: #667eea; }
 .content-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; margin-bottom: 30px; }
 .selector-section { background: var(--bg-primary); padding: 25px; border-radius: 15px; box-shadow: var(--shadow); }
 .selector-section label { display: block; margin-bottom: 15px; font-weight: 600; }
