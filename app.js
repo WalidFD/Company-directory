@@ -1,15 +1,18 @@
 var companies = [];
+var allCompanies = [];
 var currentCompanyIndex = null;
 var databaseURL = "https://company-directory-ed369-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-function initCompanies() {
+function loadCompanies() {
     fetch(databaseURL + "/companies.json")
         .then(function(response) { return response.json(); })
         .then(function(data) {
             if (data) {
                 companies = Object.values(data);
+                allCompanies = Object.values(data);
             } else {
                 companies = [];
+                allCompanies = [];
             }
             updateDropdown(companies);
         })
@@ -30,14 +33,28 @@ function updateDropdown(list) {
     });
 }
 
+// FIXED SEARCH BAR
 var searchInput = document.getElementById('search');
 if (searchInput) {
     searchInput.addEventListener('input', function() {
-        var term = this.value.toLowerCase();
-        var filtered = term ? companies.filter(function(c) {
-            return c.name.toLowerCase().includes(term) || c.personName.toLowerCase().includes(term);
-        }) : companies;
-        updateDropdown(filtered);
+        var term = this.value.toLowerCase().trim();
+
+        if (term === '') {
+            // Show all companies if search is empty
+            companies = allCompanies;
+        } else {
+            // Filter companies based on search term
+            companies = allCompanies.filter(function(c) {
+                return c.name.toLowerCase().includes(term) || 
+                       c.personName.toLowerCase().includes(term) ||
+                       c.phone.toLowerCase().includes(term) ||
+                       c.designation.toLowerCase().includes(term);
+            });
+        }
+
+        updateDropdown(companies);
+        document.getElementById('companyInfo').innerHTML = '<p class="placeholder">Select a company</p>';
+        document.getElementById('actionButtons').style.display = 'none';
     });
 }
 
@@ -75,9 +92,9 @@ function exportPDF() {
 }
 
 function downloadAllCSV() {
-    if (companies.length === 0) { alert('No companies'); return; }
+    if (allCompanies.length === 0) { alert('No companies'); return; }
     var csv = 'Company Name,Contact Person,Designation,Phone,Website,Address\n';
-    companies.forEach(function(c) {
+    allCompanies.forEach(function(c) {
         csv += '"' + c.name + '","' + c.personName + '","' + c.designation + '","' + c.phone + '","' + c.website + '","' + c.address + '"\n';
     });
     var blob = new Blob([csv], { type: 'text/csv' });
@@ -108,7 +125,7 @@ function deleteCompany() {
             })
             .then(function() {
                 alert('Company deleted!');
-                location.reload();
+                loadCompanies();
             })
             .catch(function(error) {
                 alert('Error: ' + error.message);
@@ -116,7 +133,7 @@ function deleteCompany() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', initCompanies);
+document.addEventListener('DOMContentLoaded', loadCompanies);
 
-// Refresh every 5 seconds to sync data
-setInterval(initCompanies, 5000);
+// Refresh every 10 seconds to sync data
+setInterval(loadCompanies, 10000);
